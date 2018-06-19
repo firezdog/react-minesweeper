@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from './components/Board';
+import Boardhead from './components/Boardhead'
 
 class Minesweeper extends Component {
   
@@ -9,16 +10,15 @@ class Minesweeper extends Component {
       rows: 10,
       columns: 10,
       flags: 10,
-      bombs: 10
+      mines: 10
     }
   }
   
   render() {
-    console.log(this.state.rows);
-    console.log(this.state.columns);
     return (
       <div className="minesweeper">
-        <Board rows={this.state.rows} cols={this.state.columns}/>
+        <Boardhead/>
+        <Board mines={this.state.mines} rows={this.state.rows} cols={this.state.columns}/>
       </div>
     );
   }

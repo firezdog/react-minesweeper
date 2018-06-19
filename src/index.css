@@ -4,9 +4,61 @@ body {
   font-family: sans-serif;
 }
 
+
 .minesweeper {
   margin: 20px auto;
   width: 500px;
-  height: 500px;
+  height: 600px;
   outline: 1px solid red;
+}
+
+
+.boardhead {
+  width: 500px;
+  height: 100px;
+}
+
+#resetButton {
+  position: relative;
+  top: 30px;
+  left: 225px;
+}
+
+#mineNumber {
+  position: relative;
+  top: -15px;
+  left: 350px;
+}
+
+#timer {
+  position: relative;
+  top: 22px;
+  left: 100px;
+}
+
+.board {
+  width: 500px;
+  height: 500px;
+  outline: 1px solid black;
+}
+
+.row {
+  width: 500px;
+  height: 50px;
+  outline: 1px solid black;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  outline: 1px solid black;
+  display: inline-block;
+}
+
+.open {
+  background-color: lightgrey;
+}
+
+.closed {
+  background-color: darkgrey;
 }

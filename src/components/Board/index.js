@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
+import Row from '../Row';
 
 class Board extends Component {
 
     constructor(props){
         super(props);
+
+        const board = this.createBoard(props);
+
         this.state = {
-            rows: this.createBoard(props)
+            board: board,
         }
     }
 
@@ -19,14 +23,39 @@ class Board extends Component {
             }
             board.push(newRow);
         }
+
+        //Generate mines randomly.
+        let numberOfMines = this.props.mines;
+        this.addMines(numberOfMines, board);
         
-        console.log(board);
+        return board;
     
     }
 
+    addMines = (numberOfMines, board) => {
+        while (numberOfMines > 0) {
+            let randomRow = this.generateRandom(this.props.rows);
+            let randomCol = this.generateRandom(this.props.cols);
+            while (board[randomRow][randomCol].mine) {
+                randomRow = this.generateRandom(this.props.rows);
+                randomCol = this.generateRandom(this.props.cols);
+            }
+            board[randomRow][randomCol].mine = true;
+            numberOfMines--;
+        }
+        return board;
+    }
+
+    generateRandom(endRange){
+        return Math.floor(Math.random()*endRange);
+    }
+
     render() {
+        const rows = this.state.board.map((row,index) => {
+            return <Row key={index} row={row} />
+        });
         return (
-            <div></div>
+            <div className="board">{rows}</div>
         );
     }
 }
