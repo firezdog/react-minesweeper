@@ -1,0 +1,10 @@
+Components needed: 
+
+(1) board, 
+(5) board head, 
+    (2) mine-counter, 
+    (3) timer, 
+    (4) reset button (for loss), 
+(6) Game
+    (7) Row
+    (8) Grid item
