@@ -1,23 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 import Timer from '../Timer';
 
-class Boardhead extends Component {
-    constructor(props, ...rest) {
-        super(props, ...rest);
-        this.state = {};
-    }
+const Boardhead = (props) => {
+    let minutes = Math.floor(props.time / 60) || 0;
+    let seconds = props.time % 60 || 0;
+    let formattedTime = seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
 
-    render() {
-        return (
-            <div className="boardhead">
-                <Timer/>
-                <div id="resetButton">
-                    <button>Reset</button>
+    return (
+        <div className="boardhead">
+            <h2 class="text-center">Minesweeper</h2>
+            <div class="row">
+                <div class="col md-4 text-center">
+                    Flags: {props.flags}
                 </div>
-                <div id="mineNumber">Number of Mines</div>
+                <div class="col md-4 text-center">
+                    <button class="btn btn-danger">Reset</button>
+                </div>
+                <div class="col md-4">
+                    <Timer time={formattedTime}/>
+                </div>
             </div>
-        );
-    }
+        </div>
+    );
+
 }
 
 export default Boardhead;

@@ -8,7 +8,7 @@ const Row = (props) => {
     });
 
     return (
-        <div className="row">{cellList}</div>
+        <div className="gameRow">{cellList}</div>
     );
 }
 

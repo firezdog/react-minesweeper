@@ -8,3 +8,13 @@ Components needed:
 (6) Game
     (7) Row
     (8) Grid item
+
+open function:
+
+clicking on an open cell does nothing
+clicking on a closed cell should set cell to open
+if the cell has a mine, game is over
+if the cell does not have a mine, cell shows how many mines are nearby (this means we need a method to update cells with mines nearby as we randomly assign mines?)
+if no mines are nearby, open all adjacent cells (recursive)
+
+?? reset the board if we click on mine on first turn (seems unncessary to me)

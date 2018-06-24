@@ -4,7 +4,7 @@ class Timer extends Component {
 
     render() {
         return (
-            <div id="timer">Timer</div>
+            <div id="timer">Time: {this.props.time}</div>
         );
     }
 }

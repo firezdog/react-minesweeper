@@ -7,7 +7,7 @@ class Board extends Component {
         super(props);
 
         const board = this.createBoard(props);
-
+        
         this.state = {
             board: board,
         }
@@ -19,7 +19,15 @@ class Board extends Component {
         for (let row = 0; row  < props.rows; row++){
             let newRow = [];
             for (let col = 0; col < props.cols; col++){
-                newRow.push({row:row, col:col,nearbyMines:0,open:false,mine:false,flag:false});
+                newRow.push(
+                    {
+                        row: row, 
+                        col: col, 
+                        nearbyMines: 0, 
+                        open: false, 
+                        mine: false, 
+                        flag: false
+                    });
             }
             board.push(newRow);
         }
@@ -30,6 +38,19 @@ class Board extends Component {
         
         return board;
     
+    }
+
+    open = (cell) => {
+        let board = this.state.board;
+        let currentCell = board[cell.row][cell.col];
+        if (currentCell.mine && this.props.openCells == 0) {
+            console.log("Bombed on first turn -- recreating board.");
+            board = this.createBoard();
+            this.setState({board:board}, () => this.open(cell));
+        } else {
+            //open closed cells without flags
+            if(!currentCell.flag && !currentCell.open) {  }
+        }
     }
 
     addMines = (numberOfMines, board) => {
