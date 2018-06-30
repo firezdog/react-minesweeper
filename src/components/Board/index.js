@@ -49,8 +49,32 @@ class Board extends Component {
             this.setState({board:board}, () => this.open(cell));
         } else {
             //open closed cells without flags
-            if(!currentCell.flag && !currentCell.open) {  }
+            if(!currentCell.flag && !currentCell.open) {
+                this.props.openCellClick();
+                currentCell.open = true;
+                //count number of mines open nearby.
+                currentCell.nearbyMines = this.countMines(board, currentCell);
+            }
         }
+    }
+
+    countMines = (board, cell) => {
+        let mineCount = 0;
+        let rowDeltas = [1, 0 -1];
+        let colDeltas = [1, 0, -1];
+        for (rowDelta of rowDeltas) {
+            for (colDelta of colDeltas) {
+                if (rowDelta == 0 && colDelta == 0) { continue; }
+                if (lookForMine(board,cell,rowDelta,colDelta) { mineCount++; });
+            }
+        }
+        return mineCount;
+    }
+
+    lookForMine = (board, cell, rowDelta, colDelta) => {
+        cellDelta = board[cell.row + rowDelta][cell.col + colDelta];
+        if (cellDelta == null) return false;
+        return cellDelta.mine ? true : false;
     }
 
     addMines = (numberOfMines, board) => {
