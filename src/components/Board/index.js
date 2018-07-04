@@ -41,40 +41,70 @@ class Board extends Component {
     }
 
     open = (cell) => {
-        let board = this.state.board;
-        let currentCell = board[cell.row][cell.col];
-        if (currentCell.mine && this.props.openCells == 0) {
-            console.log("Bombed on first turn -- recreating board.");
-            board = this.createBoard();
-            this.setState({board:board}, () => this.open(cell));
-        } else {
-            //open closed cells without flags
-            if(!currentCell.flag && !currentCell.open) {
-                this.props.openCellClick();
-                currentCell.open = true;
-                //count number of mines open nearby.
-                currentCell.nearbyMines = this.countMines(board, currentCell);
+        let asyncCountMines = new Promise(resolve => {
+            let mines = this.countMines(this.state.board, cell);
+            resolve(mines);
+        })
+
+        asyncCountMines.then(numberOfMines => {
+            let board = this.state.board;
+            let currentCell = board[cell.row][cell.col];
+            if(currentCell.mine && this.props.openCells === 0) {
+                console.log("Bombed on first turn -- recreating board.");
+                board = this.createBoard(this.props);
+                this.setState({board}, () => this.open(board[cell.row][cell.col]));
+            } else {
+                //open closed cells without flags
+                if (!currentCell.flag && !currentCell.open) {
+                    if (numberOfMines === 0 && !currentCell.mine) {
+                        this.openNearby(board, cell);
+                    }
+                    this.props.openCellClick(cell);
+                    currentCell.open = true;
+                    //count number of mines open nearby.
+                    currentCell.nearbyMines = numberOfMines;
+                    this.setState({board});
+                }
+            }
+        })
+    }
+
+    openNearby = (board, cell) => {
+        for (let rowDelta = -1; rowDelta <= 1; rowDelta++) {
+            for (let colDelta = -1; colDelta <=1; colDelta++) {
+                if (rowDelta === 0 && colDelta === 0) { continue; } //skip the current mine
+                let newRow = cell.row + rowDelta;
+                let newCol = cell.col + colDelta;
+                if (0 <= newRow && newRow < this.props.rows) {
+                    if (0 <= newCol && newCol < this.props.cols) {
+                        this.open(board[newRow][newCol]);
+                    }
+                }
             }
         }
     }
 
     countMines = (board, cell) => {
         let mineCount = 0;
-        let rowDeltas = [1, 0 -1];
-        let colDeltas = [1, 0, -1];
-        for (rowDelta of rowDeltas) {
-            for (colDelta of colDeltas) {
-                if (rowDelta == 0 && colDelta == 0) { continue; }
-                if (lookForMine(board,cell,rowDelta,colDelta) { mineCount++; });
+        for (let rowDelta = -1; rowDelta <= 1; rowDelta++) {
+            for (let colDelta = -1; colDelta <=1; colDelta++) {
+                if (rowDelta === 0 && colDelta === 0) { continue; } //skip the current mine
+                if (this.lookForMine(board,cell,rowDelta,colDelta))   { mineCount++; };
             }
         }
         return mineCount;
     }
 
     lookForMine = (board, cell, rowDelta, colDelta) => {
-        cellDelta = board[cell.row + rowDelta][cell.col + colDelta];
-        if (cellDelta == null) return false;
-        return cellDelta.mine ? true : false;
+        let newRow = cell.row + rowDelta;
+        let newCol = cell.col + colDelta;
+        if (0 <= newRow && newRow < this.props.rows) {
+            if (0 <= newCol && newCol < this.props.cols) {
+                let cellDelta = board[newRow][newCol];
+                return cellDelta.mine ? true : false;
+            }
+        }
+        return false;
     }
 
     addMines = (numberOfMines, board) => {
@@ -97,7 +127,7 @@ class Board extends Component {
 
     render() {
         const rows = this.state.board.map((row,index) => {
-            return <Row key={index} row={row} />
+            return <Row open={this.open} key={index} row={row} />
         });
         return (
             <div className="board">{rows}</div>

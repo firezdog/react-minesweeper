@@ -8,15 +8,15 @@ const Boardhead = (props) => {
 
     return (
         <div className="boardhead">
-            <h2 class="text-center">Minesweeper</h2>
-            <div class="row">
-                <div class="col md-4 text-center">
+            <h2 className="text-center">Minesweeper</h2>
+            <div className="row">
+                <div className="col md-4 text-center">
                     Flags: {props.flags}
                 </div>
-                <div class="col md-4 text-center">
-                    <button class="btn btn-danger">Reset</button>
+                <div className="col md-4 text-center">
+                    <button className="btn btn-danger">Reset</button>
                 </div>
-                <div class="col md-4">
+                <div className="col md-4">
                     <Timer time={formattedTime}/>
                 </div>
             </div>

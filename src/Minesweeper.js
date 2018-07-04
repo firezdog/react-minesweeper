@@ -24,9 +24,9 @@ class Minesweeper extends Component {
 
   addSecond = () => {
     //will this cause an unwieldy number of renderings?
-    if (this.state.openCells > 0 && this.state.status != "running"){
+    if (this.state.openCells > 0 && this.state.status === "running"){
       let currentTime = this.state.time;
-      this.setState({time: currentTime + 1}, () => this.setInterval(this.tick, 1000));
+      this.setState({time: currentTime + 1});
     }
   }
 
@@ -37,10 +37,17 @@ class Minesweeper extends Component {
     this.setState({intervals: intervals});
   }
 
-  handleCellClick = () => {
-    if (this.state.openCells === 0 && this.state.status != "running") {
+  handleCellClick = (cell) => {
+    if (this.state.openCells === 0 && this.state.status !== "running") {
+      this.setInterval(this.addSecond, 1000);
       this.setState({status: "running"});
     }
+    if(cell.mine){
+      this.setState({status: "ended"});
+    }
+    this.setState(previousState => {
+      return { openCells: previousState.openCells + 1 };
+    })
   }
 
 

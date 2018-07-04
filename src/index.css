@@ -49,6 +49,8 @@ body {
 
 .open {
   background-color: #F0F0F0;
+  vertical-align: top;
+  padding: 15px;
 }
 
 .closed {
